@@ -15,7 +15,7 @@ from .database import (
     session_exists,
 )
 from .llm_service import DEFAULT_SYSTEM_PROMPT, generate_chat_reply, get_configured_keys
-from .models import ChatRequest, ChatResponse, HealthResponse, MessagesResponse
+from .schemas import ChatRequest, ChatResponse, HealthResponse, MessagesResponse
 
 load_dotenv()
 
