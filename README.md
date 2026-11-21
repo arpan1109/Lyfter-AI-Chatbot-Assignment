@@ -46,28 +46,6 @@ A full-stack, fault-tolerant LLM gateway and conversational chatbot built with *
                                                                          (openai/gpt-oss-120b)
 
 ```
-## Repository Structure:
-lyftr-AI-assignment/
-├── backend/
-│   ├── app/
-│   │   ├── main.py           # FastAPI app, CORS middleware, /health, /chat, /sessions routes
-│   │   ├── llm_service.py    # LiteLLM integration, key rotation, SHA-256 cache, failure hooks
-│   │   ├── database.py       # SQLite schema initialization, session & cache queries
-│   │   └── schemas.py        # Pydantic v2 request/response validation models
-│   ├── tests/
-│   │   └── test_api.py       # Pytest suite covering health, memory, caching, failover, and 503s
-│   ├── Dockerfile            # Multi-stage Python 3.11-slim production image
-│   └── requirements.txt      # Pinned backend dependencies
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx           # Chat UI, session manager, system prompt & failure demo controls
-│   │   └── index.css         # Dark-mode responsive styling and telemetry badges
-│   ├── Dockerfile            # Multi-stage Node build + Nginx static server
-│   ├── nginx.conf            # SPA routing configuration
-│   └── package.json          # React 18 + Vite dependencies
-├── docker-compose.yml        # Full-stack local orchestration with persistent SQLite volume
-├── Makefile                  # Convenience commands for local dev, Docker, and testing
-└── .env.example              # Environment variable template
 
 ## API Reference:
 | Method | Endpoint | Description | Success Status |
