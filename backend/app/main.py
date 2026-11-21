@@ -36,7 +36,14 @@ app.add_middleware(
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     return JSONResponse(status_code=500, content={"detail": "internal server error"})
-
+@app.get("/")
+def root():
+    return {
+        "service": "Lyftr AI Gateway",
+        "status": "running",
+        "docs": "/docs",
+        "health": "/health"
+    }
 @app.get("/health")
 def health_check():
     keys = get_configured_keys()
