@@ -39,6 +39,19 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
+from fastapi import Response
+
+@app.options("/{path:path}")
+def preflight_handler(path: str):
+    return Response(
+        status_code=200,
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Max-Age": "86400",
+        },
+    )
 
 @app.get("/")
 def root():
