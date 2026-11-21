@@ -15,7 +15,7 @@ from .database import (
     session_exists,
 )
 from .llm_service import DEFAULT_SYSTEM_PROMPT, generate_chat_reply, get_configured_keys
-from .schemas import ChatRequest, ChatResponse, HealthResponse, MessagesResponse
+from .schemas import ChatRequest, ChatResponse, MessagesResponse
 
 load_dotenv()
 
@@ -58,16 +58,15 @@ def root():
     }
 
 
-@app.get("/health", response_model=HealthResponse)
+@app.get("/health")
 def health_check():
     keys = get_configured_keys()
-    return HealthResponse(
-        status="ok",
-        keys_configured=len(keys),
-        cache_enabled=True,
-    )
-
-
+    return {
+        "status": "ok",
+        "keys_configured": len(keys),
+        "cache_enabled": True,
+    }
+    
 @app.get("/sessions/{session_id}/messages", response_model=MessagesResponse)
 def fetch_session_messages(session_id: str):
     if not session_exists(session_id):
