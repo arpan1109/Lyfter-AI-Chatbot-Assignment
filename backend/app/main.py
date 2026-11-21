@@ -101,6 +101,7 @@ def chat_endpoint(
         llm_messages.append({"role": "system", "content": effective_sys_prompt.strip()})
     for msg in history:
         llm_messages.append({"role": msg["role"], "content": msg["content"]})
+        
     llm_messages.append({"role": "user", "content": payload.message})
 
     try:
@@ -116,3 +117,4 @@ def chat_endpoint(
         reply=reply_text,
         metadata=metadata,
     )
+    # test comment
