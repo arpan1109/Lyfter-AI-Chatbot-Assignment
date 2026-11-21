@@ -44,3 +44,65 @@ A full-stack, fault-tolerant LLM gateway and conversational chatbot built with *
                                                                                        │
                                                                             Groq Inference API
                                                                          (openai/gpt-oss-120b)
+
+```
+## Repository Structure:
+lyftr-AI-assignment/
+├── backend/
+│   ├── app/
+│   │   ├── main.py           # FastAPI app, CORS middleware, /health, /chat, /sessions routes
+│   │   ├── llm_service.py    # LiteLLM integration, key rotation, SHA-256 cache, failure hooks
+│   │   ├── database.py       # SQLite schema initialization, session & cache queries
+│   │   └── schemas.py        # Pydantic v2 request/response validation models
+│   ├── tests/
+│   │   └── test_api.py       # Pytest suite covering health, memory, caching, failover, and 503s
+│   ├── Dockerfile            # Multi-stage Python 3.11-slim production image
+│   └── requirements.txt      # Pinned backend dependencies
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx           # Chat UI, session manager, system prompt & failure demo controls
+│   │   └── index.css         # Dark-mode responsive styling and telemetry badges
+│   ├── Dockerfile            # Multi-stage Node build + Nginx static server
+│   ├── nginx.conf            # SPA routing configuration
+│   └── package.json          # React 18 + Vite dependencies
+├── docker-compose.yml        # Full-stack local orchestration with persistent SQLite volume
+├── Makefile                  # Convenience commands for local dev, Docker, and testing
+└── .env.example              # Environment variable template
+
+## API Reference:
+| Method | Endpoint | Description | Success Status |
+|---|---|---|---|
+| GET | `/` | Service metadata and navigation pointers | 200 OK |
+| GET | `/health` | Readiness probe reporting configured key count & cache state | 200 OK |
+| POST | `/chat` | Submit a message with session memory, caching, and failover | 200 OK (503 if all keys fail) |
+| GET | `/sessions/{session_id}/messages` | Retrieve chronological message history for an existing session | 200 OK (404 if unknown) |
+
+## 5.Local Setup and Running Instructions:
+- Clone this repo. using:
+```
+git clone [https://github.com/arpan1109/Lyfter-AI-Chatbot-Assignment.git](https://github.com/arpan1109/Lyfter-AI-Chatbot-Assignment.git)
+cd Lyfter-AI-Chatbot-Assignment
+cp .env.example .env
+
+```
+
+- Add your Groq API keys in the .env files:
+  
+ ```
+LLM_API_KEYS=gsk_your_primary_key,gsk_your_backup_key
+LLM_MODEL=groq/openai/gpt-oss-120b
+DATABASE_URL=/data/app.db
+ENABLE_FAILURE_SIMULATION=true
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
+VITE_API_BASE_URL=http://localhost:8000
+```
+- Build your containers:
+
+```
+docker compose up --build
+```
+## 6. Run Tests:
+```
+cd backend
+pytest -v
+```
