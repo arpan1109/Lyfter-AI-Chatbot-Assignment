@@ -82,5 +82,5 @@ docker compose up --build
 ## 6. Run Tests:
 ```
 cd backend
-pytest -v
+python -m pytest
 ```
