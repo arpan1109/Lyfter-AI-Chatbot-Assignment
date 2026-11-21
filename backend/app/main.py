@@ -22,13 +22,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Lyftr AI LLM Chatbot", lifespan=lifespan)
 
-allowed_origins_raw = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
-allowed_origins = [o.strip() for o in allowed_origins_raw.split(",") if o.strip()]
+raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+origins = ["*"] if raw_origins.strip() == "*" else [o.strip().rstrip("/") for o in raw_origins.split(",") if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins if allowed_origins != ["*"] else ["*"],
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=False if origins == ["*"] else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
